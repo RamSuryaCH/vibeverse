@@ -86,9 +86,9 @@ No API Gateway, no database, no persistent storage — beautifully simple and co
 
 ## Try It / Source Code
 
-🌐 **Live app:** [YOUR_AMPLIFY_URL_HERE]
+🌐 **Live app:** https://main.d3dtpnmjar5d19.amplifyapp.com/
 
-💻 **GitHub:** [YOUR_GITHUB_REPO_HERE]
+💻 **GitHub:** https://github.com/RamSuryaCH/vibeverse
 
 ---
 
