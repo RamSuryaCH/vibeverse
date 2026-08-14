@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VibeVerse — AI Mood-to-Story Generator</title>
+  <meta name="description" content="Enter a mood or life moment and VibeVerse generates a personalized story, playlist, and color palette — powered by Amazon Bedrock and AWS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ──────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #08080f;
+      --surface:   rgba(255,255,255,0.04);
+      --border:    rgba(255,255,255,0.09);
+      --text:      #f0f0f8;
+      --muted:     #8888aa;
+      --accent:    #a78bfa;
+      --accent2:   #f472b6;
+      --glow:      rgba(167,139,250,0.35);
+      --radius:    18px;
+      --trans:     0.35s cubic-bezier(.4,0,.2,1);
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Animated background blobs ────────────────────── */
+    .bg-blobs {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+    }
+    .blob {
+      position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.18;
+      animation: drift 18s ease-in-out infinite alternate;
+    }
+    .blob-1 { width: 600px; height: 600px; background: #7c3aed; top: -200px; left: -150px; animation-delay: 0s; }
+    .blob-2 { width: 500px; height: 500px; background: #db2777; bottom: -150px; right: -100px; animation-delay: -6s; }
+    .blob-3 { width: 400px; height: 400px; background: #0ea5e9; top: 40%; left: 40%; animation-delay: -12s; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(40px, 30px) scale(1.08); }
+    }
+
+    /* ── Layout ────────────────────────────────────────── */
+    .wrapper {
+      position: relative; z-index: 1;
+      max-width: 760px; margin: 0 auto;
+      padding: 60px 24px 100px;
+    }
+
+    /* ── Header ────────────────────────────────────────── */
+    header { text-align: center; margin-bottom: 52px; }
+
+    .logo-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 100px; padding: 6px 16px; font-size: 0.78rem;
+      color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 20px; backdrop-filter: blur(12px);
+    }
+    .logo-badge span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.4)} }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 6vw, 3.8rem);
+      font-weight: 700; line-height: 1.12;
+      background: linear-gradient(135deg, #e2d9f3 0%, var(--accent) 45%, var(--accent2) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 14px;
+    }
+    .tagline { color: var(--muted); font-size: 1.05rem; font-weight: 300; line-height: 1.6; }
+
+    /* ── Input card ────────────────────────────────────── */
+    .input-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      backdrop-filter: blur(20px);
+      margin-bottom: 32px;
+      transition: border-color var(--trans), box-shadow var(--trans);
+    }
+    .input-card:focus-within {
+      border-color: rgba(167,139,250,0.4);
+      box-shadow: 0 0 40px var(--glow);
+    }
+
+    label {
+      display: block; font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 12px;
+    }
+
+    textarea {
+      width: 100%; min-height: 100px; resize: vertical;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px;
+      color: var(--text); font-family: 'Inter', sans-serif; font-size: 1rem;
+      line-height: 1.6; outline: none;
+      transition: border-color var(--trans);
+    }
+    textarea::placeholder { color: var(--muted); }
+    textarea:focus { border-color: rgba(167,139,250,0.5); }
+
+    .examples {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
+    }
+    .pill {
+      background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.2);
+      color: var(--accent); border-radius: 100px; padding: 5px 13px;
+      font-size: 0.78rem; cursor: pointer;
+      transition: background var(--trans), transform var(--trans);
+    }
+    .pill:hover { background: rgba(167,139,250,0.22); transform: translateY(-1px); }
+
+    .btn-generate {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; margin-top: 20px; padding: 16px;
+      background: linear-gradient(135deg, #7c3aed, #db2777);
+      border: none; border-radius: 12px;
+      color: #fff; font-family: 'Inter', sans-serif;
+      font-size: 1rem; font-weight: 600; cursor: pointer;
+      transition: opacity var(--trans), transform var(--trans), box-shadow var(--trans);
+      box-shadow: 0 8px 32px rgba(124,58,237,0.35);
+    }
+    .btn-generate:hover:not(:disabled) { opacity: 0.88; transform: translateY(-2px); box-shadow: 0 12px 40px rgba(124,58,237,0.5); }
+    .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Spinner */
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin 0.7s linear infinite; display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Result card ───────────────────────────────────── */
+    #result { display: none; animation: fadeUp 0.6s ease both; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+
+    .vibe-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); overflow: hidden;
+      backdrop-filter: blur(20px);
+    }
+
+    /* Palette banner */
+    .palette-banner {
+      height: 8px; display: flex;
+    }
+    .palette-banner span { flex: 1; transition: flex var(--trans); }
+    .palette-banner:hover span { flex: 2; }
+
+    .card-header {
+      padding: 28px 32px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+    .vibe-tag {
+      display: inline-block; background: rgba(167,139,250,0.15);
+      border: 1px solid rgba(167,139,250,0.3); color: var(--accent);
+      border-radius: 100px; padding: 4px 12px; font-size: 0.78rem;
+      font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em;
+      margin-bottom: 10px;
+    }
+    .vibe-card h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 700; margin-bottom: 4px;
+    }
+    .mood-echo { color: var(--muted); font-size: 0.88rem; }
+    .mood-echo em { color: var(--accent2); font-style: italic; }
+
+    .card-body { padding: 28px 32px; }
+
+    /* Story */
+    .section-label {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .section-label::after { content:''; flex:1; height:1px; background: var(--border); }
+
+    .story-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; line-height: 1.85; color: #d4d4e8;
+      font-style: italic; white-space: pre-wrap;
+      margin-bottom: 28px;
+    }
+
+    /* Audio player */
+    .audio-section { margin-bottom: 28px; }
+    .btn-audio {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(167,139,250,0.1); border: 1px solid rgba(167,139,250,0.25);
+      color: var(--accent); border-radius: 100px; padding: 10px 20px;
+      font-size: 0.9rem; font-weight: 500; cursor: pointer;
+      transition: background var(--trans), transform var(--trans);
+    }
+    .btn-audio:hover { background: rgba(167,139,250,0.2); transform: translateY(-1px); }
+    .btn-audio svg { width: 18px; height: 18px; }
+
+    /* Palette */
+    .palette-section { margin-bottom: 28px; }
+    .swatches { display: flex; gap: 10px; margin: 12px 0 10px; }
+    .swatch {
+      width: 48px; height: 48px; border-radius: 10px;
+      border: 2px solid rgba(255,255,255,0.1);
+      transition: transform var(--trans); cursor: default;
+      position: relative;
+    }
+    .swatch:hover { transform: scale(1.15); z-index: 1; }
+    .swatch::after {
+      content: attr(data-color);
+      position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%);
+      font-size: 0.65rem; color: var(--muted); white-space: nowrap;
+    }
+    .palette-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; margin-top: 32px; }
+
+    /* Playlist */
+    .playlist-section { margin-bottom: 8px; }
+    .playlist-title {
+      font-size: 1.1rem; font-weight: 600; color: var(--text); margin: 8px 0 14px;
+    }
+    .track-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .track-item {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 16px;
+      transition: background var(--trans), transform var(--trans);
+    }
+    .track-item:hover { background: rgba(255,255,255,0.06); transform: translateX(4px); }
+    .track-num {
+      font-size: 0.75rem; font-weight: 700; color: var(--accent);
+      width: 20px; text-align: right; flex-shrink: 0;
+    }
+    .track-desc { font-size: 0.9rem; color: #c0c0d8; }
+
+    /* Error */
+    .error-box {
+      background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 12px; padding: 16px 20px; color: #fca5a5;
+      font-size: 0.92rem; margin-top: 20px; display: none;
+    }
+
+    /* ── AWS badge ─────────────────────────────────────── */
+    .aws-badge {
+      text-align: center; margin-top: 48px;
+      color: var(--muted); font-size: 0.8rem;
+    }
+    .aws-badge strong { color: var(--accent); }
+
+    /* ── Responsive ────────────────────────────────────── */
+    @media (max-width: 540px) {
+      .wrapper { padding: 40px 16px 80px; }
+      .card-body, .card-header { padding: 20px; }
+      .swatches { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<div class="wrapper">
+
+  <!-- Header -->
+  <header>
+    <div class="logo-badge"><span></span> Powered by Amazon Bedrock &amp; AWS</div>
+    <h1>VibeVerse</h1>
+    <p class="tagline">Enter a mood, feeling, or life moment.<br>Get a personalized story, playlist, and color world.</p>
+  </header>
+
+  <!-- Input -->
+  <div class="input-card">
+    <label for="mood-input">Your mood or moment</label>
+    <textarea
+      id="mood-input"
+      placeholder="e.g. 'I just got rejected from my dream job' or 'Rainy Sunday morning with coffee' or 'First day at university'…"
+    ></textarea>
+    <div class="examples">
+      <div class="pill" onclick="fillMood('Quiet Saturday morning, no plans, just peace')">☁️ Peaceful morning</div>
+      <div class="pill" onclick="fillMood('I just fell in love and everything feels magical')">💜 Falling in love</div>
+      <div class="pill" onclick="fillMood('Nostalgic for childhood summers that will never come back')">🌅 Nostalgia</div>
+      <div class="pill" onclick="fillMood('Staying up at 3am thinking too much')">🌙 3am thoughts</div>
+      <div class="pill" onclick="fillMood('I just got my dream job offer — pure euphoria')">🎉 Pure euphoria</div>
+    </div>
+    <button class="btn-generate" id="gen-btn" onclick="generate()">
+      <div class="spinner" id="spinner"></div>
+      <span id="btn-label">✦ Generate My Vibe</span>
+    </button>
+    <div class="error-box" id="error-box"></div>
+  </div>
+
+  <!-- Result -->
+  <div id="result">
+    <div class="vibe-card">
+      <div class="palette-banner" id="palette-banner"></div>
+      <div class="card-header">
+        <div class="vibe-tag" id="vibe-tag">—</div>
+        <h2 id="playlist-title-header">Your Vibe Awaits</h2>
+        <p class="mood-echo">Mood: <em id="mood-echo-text">—</em></p>
+      </div>
+      <div class="card-body">
+
+        <!-- Story -->
+        <div class="section-label">✦ Your Story</div>
+        <div class="story-text" id="story-text"></div>
+
+        <!-- Audio -->
+        <div class="audio-section" id="audio-section">
+          <div class="section-label">🎙 Listen</div>
+          <button class="btn-audio" id="audio-btn" onclick="toggleAudio()">
+            <svg id="play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            <svg id="pause-icon" fill="currentColor" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            <span id="audio-btn-label">Play story aloud</span>
+          </button>
+          <audio id="story-audio" onended="audioEnded()"></audio>
+        </div>
+
+        <!-- Palette -->
+        <div class="palette-section">
+          <div class="section-label">🎨 Your Color World</div>
+          <div class="swatches" id="swatches"></div>
+          <p class="palette-desc" id="palette-desc"></p>
+        </div>
+
+        <!-- Playlist -->
+        <div class="playlist-section">
+          <div class="section-label">🎵 Playlist</div>
+          <div class="playlist-title" id="playlist-title"></div>
+          <ul class="track-list" id="track-list"></ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- AWS Badge -->
+  <div class="aws-badge">
+    Built with <strong>Amazon Bedrock (Nova Lite)</strong> · <strong>Amazon Polly</strong> · <strong>AWS Lambda</strong> · <strong>AWS Amplify</strong>
+  </div>
+
+</div>
+
+<script>
+  // ── CONFIG — replace with your Lambda Function URL after deploy ──────────
+  const LAMBDA_URL = 'https://uwkucta1pl.execute-api.ap-southeast-2.amazonaws.com/';
+
+  function fillMood(text) {
+    document.getElementById('mood-input').value = text;
+    document.getElementById('mood-input').focus();
+  }
+
+  async function generate() {
+    const mood = document.getElementById('mood-input').value.trim();
+    if (!mood) {
+      showError('Please describe your mood or moment first.');
+      return;
+    }
+
+    setLoading(true);
+    hideError();
+    document.getElementById('result').style.display = 'none';
+
+    try {
+      const res = await fetch(LAMBDA_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mood }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || `HTTP ${res.status}`);
+      }
+      const data = await res.json();
+      renderResult(data);
+    } catch (e) {
+      showError(`Something went wrong: ${e.message}`);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function renderResult(d) {
+    // Vibe tag + playlist title header
+    document.getElementById('vibe-tag').textContent          = d.vibe_tag || '✦';
+    document.getElementById('playlist-title-header').textContent = d.playlist_title || 'Your Playlist';
+    document.getElementById('mood-echo-text').textContent    = d.mood_input || '';
+
+    // Story
+    document.getElementById('story-text').textContent        = d.story || '';
+
+    // Audio
+    if (d.audio_base64) {
+      const audio = document.getElementById('story-audio');
+      audio.src   = 'data:audio/mpeg;base64,' + d.audio_base64;
+      document.getElementById('audio-section').style.display = 'block';
+    } else {
+      document.getElementById('audio-section').style.display = 'none';
+    }
+
+    // Palette banner
+    const banner  = document.getElementById('palette-banner');
+    banner.innerHTML = '';
+    (d.color_palette || []).forEach(c => {
+      const s = document.createElement('span');
+      s.style.background = c;
+      banner.appendChild(s);
+    });
+
+    // Swatches
+    const swatches = document.getElementById('swatches');
+    swatches.innerHTML = '';
+    (d.color_palette || []).forEach(c => {
+      const s = document.createElement('div');
+      s.className        = 'swatch';
+      s.style.background = c;
+      s.setAttribute('data-color', c);
+      swatches.appendChild(s);
+    });
+
+    // Palette description
+    document.getElementById('palette-desc').textContent = d.palette_description || '';
+
+    // Playlist
+    document.getElementById('playlist-title').textContent = '🎵 ' + (d.playlist_title || '');
+    const trackList = document.getElementById('track-list');
+    trackList.innerHTML = '';
+    (d.tracks || []).forEach((t, i) => {
+      const li  = document.createElement('li');
+      li.className = 'track-item';
+      li.innerHTML = `<span class="track-num">${i + 1}</span><span class="track-desc">${escHtml(t)}</span>`;
+      trackList.appendChild(li);
+    });
+
+    // Show result with animation
+    const result = document.getElementById('result');
+    result.style.display = 'block';
+    result.style.animation = 'none';
+    void result.offsetWidth; // reflow
+    result.style.animation = 'fadeUp 0.6s ease both';
+
+    result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function toggleAudio() {
+    const audio = document.getElementById('story-audio');
+    const playIcon  = document.getElementById('play-icon');
+    const pauseIcon = document.getElementById('pause-icon');
+    const label     = document.getElementById('audio-btn-label');
+
+    if (audio.paused) {
+      audio.play();
+      playIcon.style.display  = 'none';
+      pauseIcon.style.display = '';
+      label.textContent = 'Pause';
+    } else {
+      audio.pause();
+      playIcon.style.display  = '';
+      pauseIcon.style.display = 'none';
+      label.textContent = 'Play story aloud';
+    }
+  }
+
+  function audioEnded() {
+    document.getElementById('play-icon').style.display  = '';
+    document.getElementById('pause-icon').style.display = 'none';
+    document.getElementById('audio-btn-label').textContent = 'Play again';
+  }
+
+  function setLoading(on) {
+    const btn     = document.getElementById('gen-btn');
+    const spinner = document.getElementById('spinner');
+    const label   = document.getElementById('btn-label');
+    btn.disabled        = on;
+    spinner.style.display = on ? 'block' : 'none';
+    label.textContent   = on ? 'Generating your vibe…' : '✦ Generate My Vibe';
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('error-box');
+    el.textContent    = msg;
+    el.style.display  = 'block';
+  }
+  function hideError() {
+    document.getElementById('error-box').style.display = 'none';
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // Allow Ctrl+Enter / Cmd+Enter to submit
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('mood-input').addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') generate();
+    });
+  });
+</script>
+</body>
+</html>
