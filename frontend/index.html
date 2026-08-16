@@ -324,6 +324,251 @@
     }
     .track-desc { font-size: 0.9rem; color: #c0c0d8; }
 
+    /* ── Vibe Studio Styles ────────────────────────────── */
+    .studio-section {
+      margin-top: 36px;
+      padding-top: 36px;
+      border-top: 1px solid var(--border);
+    }
+    .studio-tabs {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 8px;
+    }
+    .studio-tab {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      cursor: pointer;
+      position: relative;
+      transition: color var(--trans);
+    }
+    .studio-tab:hover {
+      color: var(--text);
+    }
+    .studio-tab.active {
+      color: var(--accent2);
+    }
+    .studio-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -9px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent2);
+    }
+    .studio-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+    .studio-content.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    /* Art Remixer Layout */
+    .remixer-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+    @media (max-width: 700px) {
+      .remixer-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      aspect-ratio: 1/1;
+      margin: 0 auto;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+    }
+    #remixer-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: crosshair;
+      background: #05050a;
+    }
+    .canvas-overlay-toy {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.6);
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(4px);
+      padding: 4px 10px;
+      border-radius: 100px;
+      white-space: nowrap;
+      pointer-events: none;
+      animation: floatHint 3s ease-in-out infinite alternate;
+    }
+    @keyframes floatHint {
+      0% { transform: translateX(-50%) translateY(0); }
+      100% { transform: translateX(-50%) translateY(-4px); }
+    }
+    .remixer-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: center;
+    }
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .control-group label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .template-selector {
+      display: flex;
+      gap: 8px;
+    }
+    .tpl-btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--trans), border-color var(--trans), color var(--trans);
+    }
+    .tpl-btn:hover {
+      background: rgba(255,255,255,0.06);
+    }
+    .tpl-btn.active {
+      border-color: var(--accent2);
+      background: rgba(45, 212, 191, 0.1);
+      color: var(--accent2);
+    }
+    .btn-studio-action {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: 10px;
+      color: #05050a;
+      font-size: 0.92rem;
+      font-weight: 700;
+      padding: 14px;
+      cursor: pointer;
+      transition: opacity var(--trans), transform var(--trans);
+      margin-top: 8px;
+    }
+    .btn-studio-action:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    /* Game Layout */
+    .game-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+    .game-canvas-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 500px;
+      aspect-ratio: 5/3;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
+    }
+    #game-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #05050f;
+    }
+    .game-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(5, 5, 10, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+      z-index: 10;
+    }
+    .overlay-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent2);
+      margin-bottom: 12px;
+    }
+    .overlay-desc {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+      max-width: 320px;
+      margin-bottom: 20px;
+    }
+    .btn-game-play {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: 8px;
+      color: #05050a;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 12px 24px;
+      cursor: pointer;
+      transition: opacity var(--trans), transform var(--trans);
+    }
+    .btn-game-play:hover {
+      opacity: 0.9;
+      transform: scale(1.03);
+    }
+    .game-stats {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      width: 100%;
+    }
+    .stat-box {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .game-score-display {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+
     /* Error */
     .error-box {
       background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3);
@@ -422,6 +667,63 @@
           <div class="section-label">🎵 Playlist</div>
           <div class="playlist-title" id="playlist-title"></div>
           <ul class="track-list" id="track-list"></ul>
+        </div>
+
+        <!-- Vibe Studio -->
+        <div class="studio-section">
+          <div class="section-label">🌌 Vibe Studio</div>
+          <div class="studio-tabs">
+            <button class="studio-tab active" id="tab-btn-remixer" onclick="switchStudioTab('remixer')">🎨 Art Remixer</button>
+            <button class="studio-tab" id="tab-btn-game" onclick="switchStudioTab('game')">🎮 Vibe Catcher</button>
+          </div>
+          
+          <!-- Tab 1: Art Remixer & Particle Toy -->
+          <div id="studio-remixer-content" class="studio-content active">
+            <div class="remixer-layout">
+              <div class="canvas-container">
+                <canvas id="remixer-canvas" width="400" height="400"></canvas>
+                <div class="canvas-overlay-toy" id="canvas-hint">Interactive: hover/touch to swirl particles</div>
+              </div>
+              <div class="remixer-controls">
+                <div class="control-group">
+                  <label for="remixer-text-input">Customize Quote</label>
+                  <textarea id="remixer-text-input" rows="2" placeholder="Enter custom quote overlay..."></textarea>
+                </div>
+                <div class="control-group">
+                  <label>Album Cover Template</label>
+                  <div class="template-selector">
+                    <button class="tpl-btn active" id="tpl-btn-modern" onclick="setRemixerTemplate('modern')">Modernist</button>
+                    <button class="tpl-btn" id="tpl-btn-vinyl" onclick="setRemixerTemplate('vinyl')">Vinyl</button>
+                    <button class="tpl-btn" id="tpl-btn-gradient" onclick="setRemixerTemplate('gradient')">Ambient</button>
+                  </div>
+                </div>
+                <button class="btn-studio-action" onclick="downloadAlbumArt()">⬇️ Download Cover</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Vibe Catcher Mini Game -->
+          <div id="studio-game-content" class="studio-content">
+            <div class="game-layout">
+              <div class="game-canvas-wrapper">
+                <canvas id="game-canvas" width="500" height="300"></canvas>
+                <div id="game-start-overlay" class="game-overlay">
+                  <div class="overlay-title">Vibe Catcher</div>
+                  <p class="overlay-desc">Catch matching vibe colors to score. Avoid the dark slop circles!</p>
+                  <button class="btn-game-play" onclick="startGame()">Start Catching</button>
+                </div>
+                <div id="game-over-overlay" class="game-overlay" style="display: none;">
+                  <div class="overlay-title">Vibe Cleansed!</div>
+                  <div class="game-score-display">Score: <span id="final-score-val">0</span></div>
+                  <button class="btn-game-play" onclick="startGame()">Play Again</button>
+                </div>
+              </div>
+              <div class="game-stats">
+                <div class="stat-box">Score: <span id="game-score">0</span></div>
+                <div class="stat-box">Lives: <span id="game-lives">3</span></div>
+              </div>
+            </div>
+          </div>
         </div>
 
       </div>
@@ -534,6 +836,12 @@
       trackList.appendChild(li);
     });
 
+    // Update Vibe Studio Config
+    currentVibeTag = d.vibe_tag || '✦';
+    currentColors  = d.color_palette || ["#818cf8", "#2dd4bf", "#3b82f6", "#10b981"];
+    document.getElementById('remixer-text-input').value = d.story || 'Embrace the silent rhythm of this moment.';
+    switchStudioTab('remixer');
+
     // Show result with animation
     const result = document.getElementById('result');
     result.style.display = 'block';
@@ -618,8 +926,503 @@
     }, 2500);
   }
 
+  // ── VIBE STUDIO SYSTEM ────────────────────────────────
+  let currentVibeTag = "✦";
+  let currentColors = ["#818cf8", "#2dd4bf", "#3b82f6", "#10b981"];
+  let remixerTemplate = "modern";
+  let particles = [];
+  let remixerCanvas = null;
+  let remixerCtx = null;
+  let remixerAnimationId = null;
+  let remixerMouse = { x: null, y: null, active: false };
+
+  // Game state
+  let gameCanvas = null;
+  let gameCtx = null;
+  let gameAnimationId = null;
+  let gameActive = false;
+  let gameScore = 0;
+  let gameLives = 3;
+  let gameDifficulty = 1;
+  let gamePlayer = { x: 250, y: 270, radius: 15, targetX: 250 };
+  let gameItems = [];
+  let gameShakeTime = 0;
+  let gameSpawnerInterval = null;
+  let audioCtx = null;
+
+  function initStudio() {
+    remixerCanvas = document.getElementById('remixer-canvas');
+    if (remixerCanvas) {
+      remixerCtx = remixerCanvas.getContext('2d');
+      setupRemixerEvents();
+    }
+
+    gameCanvas = document.getElementById('game-canvas');
+    if (gameCanvas) {
+      gameCtx = gameCanvas.getContext('2d');
+      setupGameEvents();
+    }
+
+    // Set default textarea value change listener
+    const txtArea = document.getElementById('remixer-text-input');
+    if (txtArea) {
+      txtArea.addEventListener('input', (e) => {
+        drawRemixerCanvas();
+      });
+    }
+  }
+
+  function setupRemixerEvents() {
+    if (!remixerCanvas) return;
+    const rectUpdate = (e) => {
+      const rect = remixerCanvas.getBoundingClientRect();
+      const scaleX = remixerCanvas.width / rect.width;
+      const scaleY = remixerCanvas.height / rect.height;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      remixerMouse.x = (clientX - rect.left) * scaleX;
+      remixerMouse.y = (clientY - rect.top) * scaleY;
+    };
+
+    remixerCanvas.addEventListener('mousemove', (e) => {
+      rectUpdate(e);
+      remixerMouse.active = true;
+    });
+    remixerCanvas.addEventListener('mouseleave', () => {
+      remixerMouse.active = false;
+    });
+    remixerCanvas.addEventListener('mouseenter', () => {
+      remixerMouse.active = true;
+    });
+    remixerCanvas.addEventListener('touchstart', (e) => {
+      rectUpdate(e);
+      remixerMouse.active = true;
+    });
+    remixerCanvas.addEventListener('touchmove', (e) => {
+      rectUpdate(e);
+    });
+    remixerCanvas.addEventListener('touchend', () => {
+      remixerMouse.active = false;
+    });
+  }
+
+  function setupGameEvents() {
+    if (!gameCanvas) return;
+    const updateTarget = (e) => {
+      const rect = gameCanvas.getBoundingClientRect();
+      const scaleX = gameCanvas.width / rect.width;
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      gamePlayer.targetX = (clientX - rect.left) * scaleX;
+    };
+    gameCanvas.addEventListener('mousemove', updateTarget);
+    gameCanvas.addEventListener('touchmove', updateTarget);
+    gameCanvas.addEventListener('touchstart', (e) => {
+      initAudioCtx();
+      updateTarget(e);
+    });
+  }
+
+  function switchStudioTab(tab) {
+    document.getElementById('tab-btn-remixer').classList.remove('active');
+    document.getElementById('tab-btn-game').classList.remove('active');
+    document.getElementById('studio-remixer-content').classList.remove('active');
+    document.getElementById('studio-game-content').classList.remove('active');
+
+    if (tab === 'remixer') {
+      document.getElementById('tab-btn-remixer').classList.add('active');
+      document.getElementById('studio-remixer-content').classList.add('active');
+      stopGame();
+      startParticleToy();
+    } else if (tab === 'game') {
+      document.getElementById('tab-btn-game').classList.add('active');
+      document.getElementById('studio-game-content').classList.add('active');
+      stopParticleToy();
+      initGame();
+    }
+  }
+
+  // ── PARTICLE SANDBOX & ALBUM ART COVER ─────────────────
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < 40; i++) {
+      particles.push({
+        x: Math.random() * remixerCanvas.width,
+        y: Math.random() * remixerCanvas.height,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2,
+        size: Math.random() * 3 + 2,
+        color: currentColors[Math.floor(Math.random() * currentColors.length)],
+        alpha: Math.random() * 0.4 + 0.3
+      });
+    }
+  }
+
+  function startParticleToy() {
+    initParticles();
+    if (remixerAnimationId) cancelAnimationFrame(remixerAnimationId);
+    
+    function loop() {
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > remixerCanvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > remixerCanvas.height) p.vy *= -1;
+
+        if (remixerMouse.active) {
+          const dx = remixerMouse.x - p.x;
+          const dy = remixerMouse.y - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 120) {
+            const angle = Math.atan2(dy, dx) + Math.PI / 2;
+            p.vx += Math.cos(angle) * 0.08;
+            p.vy += Math.sin(angle) * 0.08;
+            const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+            if (speed > 2.5) {
+              p.vx = (p.vx / speed) * 2.5;
+              p.vy = (p.vy / speed) * 2.5;
+            }
+          }
+        }
+      });
+      drawRemixerCanvas();
+      remixerAnimationId = requestAnimationFrame(loop);
+    }
+    remixerAnimationId = requestAnimationFrame(loop);
+  }
+
+  function stopParticleToy() {
+    if (remixerAnimationId) {
+      cancelAnimationFrame(remixerAnimationId);
+      remixerAnimationId = null;
+    }
+  }
+
+  function setRemixerTemplate(tpl) {
+    remixerTemplate = tpl;
+    document.getElementById('tpl-btn-modern').classList.remove('active');
+    document.getElementById('tpl-btn-vinyl').classList.remove('active');
+    document.getElementById('tpl-btn-gradient').classList.remove('active');
+    document.getElementById('tpl-btn-' + tpl).classList.add('active');
+    drawRemixerCanvas();
+  }
+
+  function drawRemixerCanvas() {
+    if (!remixerCtx) return;
+    const w = remixerCanvas.width;
+    const h = remixerCanvas.height;
+
+    if (remixerTemplate === 'modern') {
+      remixerCtx.fillStyle = '#05050a';
+      remixerCtx.fillRect(0, 0, w, h);
+      remixerCtx.fillStyle = currentColors[0] + '18';
+      remixerCtx.fillRect(40, 40, w - 80, h - 80);
+      remixerCtx.strokeStyle = currentColors[1] + '33';
+      remixerCtx.lineWidth = 1;
+      remixerCtx.strokeRect(60, 60, w - 120, h - 120);
+      remixerCtx.fillStyle = currentColors[2] + '15';
+      remixerCtx.beginPath();
+      remixerCtx.arc(w/2, h/2 - 30, 80, 0, Math.PI * 2);
+      remixerCtx.fill();
+    } else if (remixerTemplate === 'vinyl') {
+      remixerCtx.fillStyle = '#05050a';
+      remixerCtx.fillRect(0, 0, w, h);
+      const cx = w/2;
+      const cy = h/2 - 20;
+      remixerCtx.strokeStyle = 'rgba(255,255,255,0.03)';
+      remixerCtx.lineWidth = 2;
+      for (let r = 50; r <= 160; r += 16) {
+        remixerCtx.beginPath();
+        remixerCtx.arc(cx, cy, r, 0, Math.PI * 2);
+        remixerCtx.stroke();
+      }
+      const grad = remixerCtx.createRadialGradient(cx, cy, 10, cx, cy, 45);
+      grad.addColorStop(0, currentColors[0]);
+      grad.addColorStop(1, currentColors[1] || currentColors[0]);
+      remixerCtx.fillStyle = grad;
+      remixerCtx.beginPath();
+      remixerCtx.arc(cx, cy, 45, 0, Math.PI * 2);
+      remixerCtx.fill();
+      remixerCtx.fillStyle = '#05050a';
+      remixerCtx.beginPath();
+      remixerCtx.arc(cx, cy, 5, 0, Math.PI * 2);
+      remixerCtx.fill();
+    } else if (remixerTemplate === 'gradient') {
+      const grad = remixerCtx.createRadialGradient(w/2, h/2, 20, w/2, h/2, w);
+      grad.addColorStop(0, currentColors[0] + 'cc');
+      grad.addColorStop(0.5, (currentColors[1] || currentColors[0]) + '88');
+      grad.addColorStop(1, '#05050a');
+      remixerCtx.fillStyle = grad;
+      remixerCtx.fillRect(0, 0, w, h);
+    }
+
+    particles.forEach(p => {
+      remixerCtx.fillStyle = p.color;
+      remixerCtx.globalAlpha = p.alpha;
+      remixerCtx.beginPath();
+      remixerCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      remixerCtx.fill();
+
+      if (remixerMouse.active) {
+        const dx = remixerMouse.x - p.x;
+        const dy = remixerMouse.y - p.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 100) {
+          remixerCtx.strokeStyle = p.color;
+          remixerCtx.globalAlpha = (1 - dist / 100) * 0.25;
+          remixerCtx.lineWidth = 0.8;
+          remixerCtx.beginPath();
+          remixerCtx.moveTo(remixerMouse.x, remixerMouse.y);
+          remixerCtx.lineTo(p.x, p.y);
+          remixerCtx.stroke();
+        }
+      }
+    });
+    remixerCtx.globalAlpha = 1.0;
+
+    remixerCtx.textAlign = 'center';
+    remixerCtx.fillStyle = '#ffffff';
+    remixerCtx.font = 'bold 13px "Inter", sans-serif';
+    remixerCtx.letterSpacing = '5px';
+    const tagText = (currentVibeTag || '✦ VIBE ✦').toUpperCase();
+    remixerCtx.fillText(tagText, w/2, 60);
+
+    const customTxt = document.getElementById('remixer-text-input').value.trim() || 'Embrace the silent rhythm of this moment.';
+    remixerCtx.fillStyle = 'rgba(255,255,255,0.85)';
+    remixerCtx.font = 'italic 16px "Playfair Display", Georgia, serif';
+    remixerCtx.letterSpacing = 'normal';
+    wrapText(remixerCtx, customTxt, w/2, h - 110, w - 80, 24);
+
+    remixerCtx.fillStyle = 'rgba(255,255,255,0.25)';
+    remixerCtx.font = '700 8px "Inter", sans-serif';
+    remixerCtx.letterSpacing = '3px';
+    remixerCtx.fillText('VIBEVERSE ALBUM STUDIO', w/2, h - 30);
+  }
+
+  function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+    const words = text.split(' ');
+    let line = '';
+    let currentY = y;
+    for (let n = 0; n < words.length; n++) {
+      let testLine = line + words[n] + ' ';
+      let metrics = ctx.measureText(testLine);
+      let testWidth = metrics.width;
+      if (testWidth > maxWidth && n > 0) {
+        ctx.fillText(line, x, currentY);
+        line = words[n] + ' ';
+        currentY += lineHeight;
+      } else {
+        line = testLine;
+      }
+    }
+    ctx.fillText(line, x, currentY);
+  }
+
+  function downloadAlbumArt() {
+    if (!remixerCanvas) return;
+    const link = document.createElement('a');
+    link.download = `vibeverse-${currentVibeTag.toLowerCase().replace(/\s+/g, '-')}-cover.png`;
+    link.href = remixerCanvas.toDataURL('image/png');
+    link.click();
+    showToast("Downloaded cover image successfully!");
+  }
+
+  function initAudioCtx() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+  }
+
+  function playSound(startFreq, endFreq, duration, type) {
+    try {
+      initAudioCtx();
+      if (!audioCtx) return;
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type || 'sine';
+      osc.frequency.setValueAtTime(startFreq, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(endFreq, audioCtx.currentTime + duration);
+      gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch (e) {
+      console.warn("Audio failed:", e);
+    }
+  }
+
+  // ── VIBE CATCHER MINI GAME ───────────────────────────
+  function initGame() {
+    gameScore = 0;
+    gameLives = 3;
+    gameDifficulty = 1;
+    gameItems = [];
+    gameActive = false;
+    gamePlayer.x = 250;
+    gamePlayer.targetX = 250;
+    gameShakeTime = 0;
+    document.getElementById('game-score').textContent = '0';
+    document.getElementById('game-lives').textContent = '3';
+    document.getElementById('game-start-overlay').style.display = '';
+    document.getElementById('game-over-overlay').style.display = 'none';
+    drawGamePlaceholder();
+  }
+
+  function drawGamePlaceholder() {
+    if (!gameCtx) return;
+    const w = gameCanvas.width;
+    const h = gameCanvas.height;
+    gameCtx.fillStyle = '#05050f';
+    gameCtx.fillRect(0, 0, w, h);
+    gameCtx.strokeStyle = 'rgba(255,255,255,0.02)';
+    gameCtx.lineWidth = 1;
+    for (let x = 0; x < w; x += 30) {
+      gameCtx.beginPath(); gameCtx.moveTo(x, 0); gameCtx.lineTo(x, h); gameCtx.stroke();
+    }
+    drawPlayerCircle(250, 270, 15);
+  }
+
+  function drawPlayerCircle(x, y, r) {
+    if (!gameCtx) return;
+    gameCtx.shadowBlur = 15;
+    gameCtx.shadowColor = currentColors[0];
+    gameCtx.fillStyle = currentColors[0];
+    gameCtx.beginPath();
+    gameCtx.arc(x, y, r, 0, Math.PI*2);
+    gameCtx.fill();
+    gameCtx.shadowBlur = 0;
+  }
+
+  function startGame() {
+    initAudioCtx();
+    initGame();
+    document.getElementById('game-start-overlay').style.display = 'none';
+    document.getElementById('game-over-overlay').style.display = 'none';
+    gameActive = true;
+    if (gameAnimationId) cancelAnimationFrame(gameAnimationId);
+    gameAnimationId = requestAnimationFrame(gameLoop);
+    if (gameSpawnerInterval) clearInterval(gameSpawnerInterval);
+    gameSpawnerInterval = setInterval(spawnGameItem, 1200);
+    playSound(440, 880, 0.25, 'sine');
+  }
+
+  function stopGame() {
+    gameActive = false;
+    if (gameAnimationId) cancelAnimationFrame(gameAnimationId);
+    if (gameSpawnerInterval) clearInterval(gameSpawnerInterval);
+  }
+
+  function spawnGameItem() {
+    if (!gameActive) return;
+    const w = gameCanvas.width;
+    const num = Math.random() > 0.6 ? 2 : 1;
+    for(let i=0; i<num; i++) {
+      const isGood = Math.random() > 0.35;
+      const size = isGood ? Math.random() * 4 + 7 : 9;
+      const item = {
+        x: Math.random() * (w - 30) + 15,
+        y: -10,
+        radius: size,
+        speed: Math.random() * 1.5 + 1.2 + gameDifficulty * 0.4,
+        type: isGood ? 'good' : 'bad',
+        color: isGood ? currentColors[Math.floor(Math.random() * currentColors.length)] : '#ef4444'
+      };
+      gameItems.push(item);
+    }
+  }
+
+  function gameLoop() {
+    if (!gameActive) return;
+    updateGame();
+    drawGame();
+    gameAnimationId = requestAnimationFrame(gameLoop);
+  }
+
+  function updateGame() {
+    gamePlayer.x += (gamePlayer.targetX - gamePlayer.x) * 0.15;
+    const minX = gamePlayer.radius;
+    const maxX = gameCanvas.width - gamePlayer.radius;
+    if (gamePlayer.x < minX) gamePlayer.x = minX;
+    if (gamePlayer.x > maxX) gamePlayer.x = maxX;
+    gameDifficulty = 1 + (gameScore / 150);
+
+    for (let i = gameItems.length - 1; i >= 0; i--) {
+      const item = gameItems[i];
+      item.y += item.speed;
+      const dx = gamePlayer.x - item.x;
+      const dy = gamePlayer.y - item.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      if (dist < gamePlayer.radius + item.radius) {
+        if (item.type === 'good') {
+          gameScore += 10;
+          document.getElementById('game-score').textContent = gameScore;
+          playSound(523.25, 1046.50, 0.12, 'sine');
+        } else {
+          gameLives -= 1;
+          document.getElementById('game-lives').textContent = gameLives;
+          gameShakeTime = 12;
+          playSound(150, 60, 0.35, 'sawtooth');
+          if (gameLives <= 0) endGame();
+        }
+        gameItems.splice(i, 1);
+        continue;
+      }
+      if (item.y > gameCanvas.height + 20) {
+        gameItems.splice(i, 1);
+      }
+    }
+  }
+
+  function endGame() {
+    gameActive = false;
+    clearInterval(gameSpawnerInterval);
+    document.getElementById('final-score-val').textContent = gameScore;
+    document.getElementById('game-over-overlay').style.display = '';
+    playSound(220, 110, 0.6, 'sine');
+  }
+
+  function drawGame() {
+    if (!gameCtx) return;
+    const w = gameCanvas.width;
+    const h = gameCanvas.height;
+    gameCtx.save();
+    if (gameShakeTime > 0) {
+      gameCtx.translate((Math.random() - 0.5) * 8, (Math.random() - 0.5) * 8);
+      gameShakeTime--;
+    }
+    gameCtx.fillStyle = '#05050f';
+    gameCtx.fillRect(0, 0, w, h);
+    gameCtx.strokeStyle = 'rgba(255,255,255,0.015)';
+    gameCtx.lineWidth = 1;
+    for (let x = 0; x < w; x += 30) {
+      gameCtx.beginPath(); gameCtx.moveTo(x, 0); gameCtx.lineTo(x, h); gameCtx.stroke();
+    }
+    gameCtx.shadowBlur = 6;
+    gameItems.forEach(item => {
+      gameCtx.shadowColor = item.color;
+      gameCtx.fillStyle = item.color;
+      if (item.type === 'good') {
+        gameCtx.beginPath(); gameCtx.arc(item.x, item.y, item.radius, 0, Math.PI * 2); gameCtx.fill();
+      } else {
+        gameCtx.strokeStyle = '#ef4444';
+        gameCtx.fillStyle = '#120505';
+        gameCtx.beginPath(); gameCtx.arc(item.x, item.y, item.radius, 0, Math.PI * 2); gameCtx.fill(); gameCtx.stroke();
+        gameCtx.beginPath(); gameCtx.arc(item.x, item.y, item.radius - 3, 0, Math.PI * 2); gameCtx.fillStyle = '#ef4444'; gameCtx.fill();
+      }
+    });
+    gameCtx.shadowBlur = 0;
+    drawPlayerCircle(gamePlayer.x, gamePlayer.y, gamePlayer.radius);
+    gameCtx.restore();
+  }
+
   // Allow Ctrl+Enter / Cmd+Enter to submit
   document.addEventListener('DOMContentLoaded', () => {
+    initStudio();
     document.getElementById('mood-input').addEventListener('keydown', e => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') generate();
     });
