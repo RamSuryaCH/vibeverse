@@ -33,6 +33,11 @@ CRITICAL STORYTELLING RULES:
 - NEVER use these AI clichés: delve, foster, leverage, utilize, facilitate, empower, streamline, robust, cutting-edge, paradigm shift, game changer, tapestry, realm, beacon, multifaceted, meticulous, intricate, paramount, transformative, elevate, embark, supercharge, harness, ever-evolving.
 - Avoid binary contrasts ("not X, but Y") and fake-profound kicker lines that end in cute metaphors.
 - End on the last concrete image or feeling; do not summarize or recap.
+
+CRITICAL COLOR PALETTE RULES:
+- The 4 hex codes must form a highly cohesive, designer-grade color palette (analogous, monochromatic, split-complementary, or balanced atmospheric tones).
+- Avoid raw primary or highly saturated default colors (e.g., pure red #ff0000, green #00ff00, blue #0000ff).
+- Prioritize sophisticated hues: warm muted pastels, deep jewel tones, dusty earth colors, or soft neon-tinted darks.
 """
 
 

@@ -245,20 +245,65 @@
 
     /* Palette */
     .palette-section { margin-bottom: 28px; }
-    .swatches { display: flex; gap: 10px; margin: 12px 0 10px; }
+    .swatches { display: flex; gap: 14px; margin: 18px 0 14px; }
     .swatch {
-      width: 48px; height: 48px; border-radius: 10px;
-      border: 2px solid rgba(255,255,255,0.1);
-      transition: transform var(--trans); cursor: default;
+      width: 52px; height: 52px; border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.15);
+      transition: transform var(--trans), border-color var(--trans), box-shadow var(--trans);
+      cursor: pointer;
       position: relative;
     }
-    .swatch:hover { transform: scale(1.15); z-index: 1; }
+    .swatch:hover {
+      transform: scale(1.15) translateY(-2px);
+      z-index: 1;
+      border-color: rgba(255,255,255,0.5);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
     .swatch::after {
       content: attr(data-color);
-      position: absolute; bottom: -24px; left: 50%; transform: translateX(-50%);
-      font-size: 0.65rem; color: var(--muted); white-space: nowrap;
+      position: absolute; bottom: 125%; left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      font-size: 0.72rem; font-weight: 600; color: #fff;
+      background: rgba(8, 8, 15, 0.85); backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 6px;
+      padding: 4px 8px; opacity: 0; pointer-events: none;
+      transition: opacity var(--trans), transform var(--trans);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+      white-space: nowrap;
     }
-    .palette-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; margin-top: 32px; }
+    .swatch:hover::after {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .palette-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.5; margin-top: 24px; }
+
+    /* Toast Notification styles */
+    #toast-container {
+      position: fixed; bottom: 30px; left: 50%;
+      transform: translateX(-50%); display: flex;
+      flex-direction: column; gap: 10px; z-index: 9999;
+      pointer-events: none;
+    }
+    .toast {
+      background: rgba(20, 20, 35, 0.85); backdrop-filter: blur(12px);
+      border: 1px solid var(--border); color: var(--text);
+      padding: 12px 24px; border-radius: 10px;
+      font-size: 0.88rem; font-weight: 500;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      animation: toastFadeIn 0.35s cubic-bezier(.4,0,.2,1) forwards;
+      display: flex; align-items: center; gap: 8px;
+    }
+    @keyframes toastFadeIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .toast.fade-out {
+      animation: toastFadeOut 0.3s ease forwards;
+    }
+    @keyframes toastFadeOut {
+      from { opacity: 1; transform: scale(1); }
+      to   { opacity: 0; transform: scale(0.9); }
+    }
 
     /* Playlist */
     .playlist-section { margin-bottom: 8px; }
@@ -456,6 +501,13 @@
       banner.appendChild(s);
     });
 
+    // Update animated background blobs with the generated color palette
+    if (d.color_palette && d.color_palette.length >= 3) {
+      document.querySelector('.blob-1').style.background = d.color_palette[0];
+      document.querySelector('.blob-2').style.background = d.color_palette[1];
+      document.querySelector('.blob-3').style.background = d.color_palette[2];
+    }
+
     // Swatches
     const swatches = document.getElementById('swatches');
     swatches.innerHTML = '';
@@ -464,6 +516,7 @@
       s.className        = 'swatch';
       s.style.background = c;
       s.setAttribute('data-color', c);
+      s.onclick          = () => copyColor(c);
       swatches.appendChild(s);
     });
 
@@ -538,6 +591,33 @@
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
 
+  function copyColor(hex) {
+    navigator.clipboard.writeText(hex).then(() => {
+      showToast(`Copied ${hex} to clipboard!`);
+    }).catch(() => {
+      showToast(`Color HEX: ${hex}`);
+    });
+  }
+
+  function showToast(msg) {
+    const container = document.getElementById('toast-container');
+    let cEl = document.getElementById('toast-container');
+    if (!cEl) {
+      cEl = document.createElement('div');
+      cEl.id = 'toast-container';
+      document.body.appendChild(cEl);
+    }
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = `<span>✦</span> <span>${msg}</span>`;
+    cEl.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.classList.add('fade-out');
+      setTimeout(() => toast.remove(), 300);
+    }, 2500);
+  }
+
   // Allow Ctrl+Enter / Cmd+Enter to submit
   document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('mood-input').addEventListener('keydown', e => {
@@ -545,5 +625,6 @@
     });
   });
 </script>
+<div id="toast-container"></div>
 </body>
 </html>
