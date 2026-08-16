@@ -67,6 +67,9 @@ def handler(event, context):
                 'headers': cors_headers,
                 'body': json.dumps({'error': 'mood is required'}),
             }
+        voice_id = (body.get('voice_id') or 'Joanna').strip()
+        if voice_id not in ['Joanna', 'Amy', 'Matthew', 'Brian']:
+            voice_id = 'Joanna'
 
         bedrock_payload = {
             "messages": [
@@ -106,7 +109,7 @@ def handler(event, context):
         polly_resp = polly.synthesize_speech(
             Text=story_text[:2999],
             OutputFormat='mp3',
-            VoiceId='Joanna',
+            VoiceId=voice_id,
             Engine='neural',
         )
         audio_bytes = polly_resp['AudioStream'].read()

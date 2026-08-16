@@ -568,20 +568,188 @@
       width: 100%;
       word-wrap: break-word;
     }
-      display: flex;
-      gap: 24px;
-      justify-content: center;
-      width: 100%;
-    }
-    .stat-box {
+    
+    /* Loader Timeline */
+    .loader-timeline {
+      margin-top: 24px;
+      padding: 20px;
       background: var(--surface);
-      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 16px;
       box-shadow: var(--nm-inset);
-      border-radius: 12px;
-      padding: 8px 18px;
-      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      animation: fadeIn 0.4s ease;
+    }
+    .timeline-progress-track {
+      width: 100%;
+      height: 6px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 100px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .timeline-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
+      border-radius: 100px;
+      transition: width 0.6s cubic-bezier(.16,1,.3,1);
+    }
+    .timeline-step {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+      opacity: 0.4;
+      transition: opacity var(--trans), color var(--trans);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .timeline-step.active {
+      opacity: 1;
+      color: var(--accent);
       font-weight: 600;
-      font-size: 0.88rem;
+    }
+
+    /* Voice Selector Pills */
+    .voice-selector-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .voice-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: inline-block;
+    }
+    .voice-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .voice-pill {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.015);
+      border-radius: 100px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      box-shadow: var(--nm-flat);
+      transition: box-shadow var(--trans), color var(--trans), transform var(--trans);
+    }
+    .voice-pill:hover {
+      color: var(--text);
+      box-shadow: var(--nm-flat-hover);
+      transform: translateY(-1px);
+    }
+    .voice-pill.active {
+      color: var(--accent);
+      box-shadow: var(--nm-inset);
+      transform: translateY(0);
+    }
+
+    /* Ambient Audio Mixer */
+    .ambient-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .ambient-controls {
+      display: flex;
+      gap: 12px;
+    }
+    .ambient-toggle {
+      background: var(--surface);
+      border: 1px solid rgba(255,255,255,0.015);
+      border-radius: var(--radius);
+      padding: 10px 18px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      box-shadow: var(--nm-flat);
+      transition: box-shadow var(--trans), color var(--trans), transform var(--trans);
+      flex: 1;
+      text-align: center;
+    }
+    .ambient-toggle:hover {
+      color: var(--text);
+      box-shadow: var(--nm-flat-hover);
+      transform: translateY(-1px);
+    }
+    .ambient-toggle.active {
+      color: var(--accent);
+      box-shadow: var(--nm-inset);
+      transform: translateY(0);
+    }
+    .ambient-volume-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 4px;
+    }
+    .ambient-vol-icon {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .ambient-volume-slider {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 100px;
+      background: rgba(0,0,0,0.3);
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.5);
+      outline: none;
+    }
+    .ambient-volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+    .ambient-volume-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Save Meme Button */
+    .btn-meme-save {
+      background: var(--surface);
+      border: 1px solid rgba(255, 255, 255, 0.015);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 10px 20px;
+      cursor: pointer;
+      box-shadow: var(--nm-flat);
+      transition: box-shadow var(--trans), transform var(--trans), color var(--trans);
+      margin-top: 12px;
+    }
+    .btn-meme-save:hover {
+      box-shadow: var(--nm-flat-hover);
+      transform: translateY(-2px);
+      color: var(--accent);
+    }
+    .btn-meme-save:active {
+      box-shadow: var(--nm-inset);
+      transform: translateY(1px);
     }
     .game-score-display {
       font-size: 1.5rem;
@@ -644,6 +812,18 @@
       <span id="btn-label">✦ Generate My Vibe</span>
     </button>
     <div class="error-box" id="error-box"></div>
+    
+    <!-- Loading/Processing Timeline -->
+    <div class="loader-timeline" id="loader-timeline" style="display: none;">
+      <div class="timeline-progress-track">
+        <div class="timeline-progress-bar" id="timeline-progress-bar"></div>
+      </div>
+      <div class="timeline-step active" id="step-0">✦ Tuning emotional sensors...</div>
+      <div class="timeline-step" id="step-1">✦ Transcribing narrative spectrum...</div>
+      <div class="timeline-step" id="step-2">✦ Chromating structural palette...</div>
+      <div class="timeline-step" id="step-3">✦ Composing playlist frequency...</div>
+      <div class="timeline-step" id="step-4">✦ Synthesizing human voice...</div>
+    </div>
   </div>
 
   <!-- Result -->
@@ -664,6 +844,18 @@
         <!-- Audio -->
         <div class="audio-section" id="audio-section">
           <div class="section-label">🎙 Listen Story</div>
+          
+          <!-- Narrator Voice Profile Selector -->
+          <div class="voice-selector-container">
+            <span class="voice-label">Narrator Profile:</span>
+            <div class="voice-pills">
+              <button class="voice-pill active" data-voice="Joanna" onclick="selectVoice('Joanna')">Joanna (US Warm)</button>
+              <button class="voice-pill" data-voice="Amy" onclick="selectVoice('Amy')">Amy (British Soft)</button>
+              <button class="voice-pill" data-voice="Matthew" onclick="selectVoice('Matthew')">Matthew (Deep Male)</button>
+              <button class="voice-pill" data-voice="Brian" onclick="selectVoice('Brian')">Brian (Classic UK)</button>
+            </div>
+          </div>
+
           <div class="audio-player-card">
             <!-- Left: Play button -->
             <button class="player-play-btn" id="audio-btn" onclick="toggleAudio()">
@@ -683,6 +875,21 @@
             <!-- Right: Time Indicator -->
             <div class="player-time" id="player-time-display">00:00 / 00:00</div>
           </div>
+          
+          <!-- Ambient Soundscapes Mixer -->
+          <div class="ambient-section">
+            <span class="voice-label">Atmospheric Ambient Mixer:</span>
+            <div class="ambient-controls">
+              <button class="ambient-toggle" id="ambient-rain" onclick="toggleAmbient('rain')">🌧️ Rain</button>
+              <button class="ambient-toggle" id="ambient-fire" onclick="toggleAmbient('fire')">🔥 Fire</button>
+              <button class="ambient-toggle" id="ambient-vinyl" onclick="toggleAmbient('vinyl')">📻 Vinyl surface</button>
+            </div>
+            <div class="ambient-volume-row">
+              <span class="ambient-vol-icon">🔊</span>
+              <input type="range" class="ambient-volume-slider" id="ambient-volume" min="0" max="1" step="0.05" value="0.25" oninput="setAmbientVolume(this.value)">
+            </div>
+          </div>
+
           <audio id="story-audio" onended="audioEnded()" ontimeupdate="updateAudioProgress()" onloadedmetadata="initAudioDuration()"></audio>
         </div>
 
@@ -718,6 +925,7 @@
               <!-- Bottom caption -->
               <div class="meme-text bottom" id="meme-text-bottom">—</div>
             </div>
+            <button class="btn-meme-save" onclick="exportMeme()">💾 Save Meme Card</button>
           </div>
         </div>
 
@@ -815,46 +1023,69 @@
     bgCtx.fillStyle = '#181b24';
     bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
 
-    bgParticles.forEach(p => {
-      p.angle += p.angleSpeed;
-      p.vx += Math.cos(p.angle) * 0.001;
-      p.vy += Math.sin(p.angle) * 0.001;
+    for (let i = bgParticles.length - 1; i >= 0; i--) {
+      const p = bgParticles[i];
       
-      const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
-      if (speed > 0.5) {
-        p.vx = (p.vx / speed) * 0.5;
-        p.vy = (p.vy / speed) * 0.5;
-      }
-
-      p.x += p.vx;
-      p.y += p.vy;
-
-      if (p.x < -p.size) p.x = bgCanvas.width + p.size;
-      if (p.x > bgCanvas.width + p.size) p.x = -p.size;
-      if (p.y < -p.size) p.y = bgCanvas.height + p.size;
-      if (p.y > bgCanvas.height + p.size) p.y = -p.size;
-
-      if (bgMouse.active) {
-        const dx = bgMouse.x - p.x;
-        const dy = bgMouse.y - p.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 300) {
-          const force = (300 - dist) / 300;
-          p.x -= dx * force * 0.02;
-          p.y -= dy * force * 0.02;
+      if (p.isTail) {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= p.decay;
+        if (p.life <= 0) {
+          bgParticles.splice(i, 1);
+          continue;
         }
+
+        bgCtx.save();
+        bgCtx.globalAlpha = p.life;
+        const radialGrad = bgCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size * 2.5);
+        radialGrad.addColorStop(0, p.color);
+        radialGrad.addColorStop(1, 'rgba(0,0,0,0)');
+        bgCtx.fillStyle = radialGrad;
+        bgCtx.beginPath();
+        bgCtx.arc(p.x, p.y, p.size * 2.5, 0, Math.PI * 2);
+        bgCtx.fill();
+        bgCtx.restore();
+      } else {
+        p.angle += p.angleSpeed;
+        p.vx += Math.cos(p.angle) * 0.001;
+        p.vy += Math.sin(p.angle) * 0.001;
+        
+        const speed = Math.sqrt(p.vx * p.vx + p.vy * p.vy);
+        if (speed > 0.5) {
+          p.vx = (p.vx / speed) * 0.5;
+          p.vy = (p.vy / speed) * 0.5;
+        }
+
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < -p.size) p.x = bgCanvas.width + p.size;
+        if (p.x > bgCanvas.width + p.size) p.x = -p.size;
+        if (p.y < -p.size) p.y = bgCanvas.height + p.size;
+        if (p.y > bgCanvas.height + p.size) p.y = -p.size;
+
+        if (bgMouse.active) {
+          const dx = bgMouse.x - p.x;
+          const dy = bgMouse.y - p.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 300) {
+            const force = (300 - dist) / 300;
+            p.x -= dx * force * 0.02;
+            p.y -= dy * force * 0.02;
+          }
+        }
+
+        const radialGrad = bgCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+        radialGrad.addColorStop(0, p.color);
+        radialGrad.addColorStop(0.5, p.color.replace('0.07', '0.03').replace('0.08', '0.03'));
+        radialGrad.addColorStop(1, 'rgba(0,0,0,0)');
+
+        bgCtx.fillStyle = radialGrad;
+        bgCtx.beginPath();
+        bgCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        bgCtx.fill();
       }
-
-      const radialGrad = bgCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
-      radialGrad.addColorStop(0, p.color);
-      radialGrad.addColorStop(0.5, p.color.replace('0.07', '0.03').replace('0.08', '0.03'));
-      radialGrad.addColorStop(1, 'rgba(0,0,0,0)');
-
-      bgCtx.fillStyle = radialGrad;
-      bgCtx.beginPath();
-      bgCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      bgCtx.fill();
-    });
+    }
 
     requestAnimationFrame(animateBgCanvas);
   }
@@ -867,6 +1098,20 @@
     bgMouse.x = e.clientX;
     bgMouse.y = e.clientY;
     bgMouse.active = true;
+    
+    if (Math.random() < 0.4) {
+      bgParticles.push({
+        x: e.clientX,
+        y: e.clientY,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2,
+        size: Math.random() * 3 + 1.5,
+        color: currentColors[Math.floor(Math.random() * currentColors.length)] || '#818cf8',
+        life: 1.0,
+        decay: Math.random() * 0.02 + 0.015,
+        isTail: true
+      });
+    }
   });
   window.addEventListener('mouseleave', () => {
     bgMouse.active = false;
@@ -892,7 +1137,7 @@
       const res = await fetch(LAMBDA_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ mood }),
+        body: JSON.stringify({ mood, voice_id: selectedVoice }),
       });
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
@@ -1144,13 +1389,52 @@
     document.getElementById('progress-glow').style.width = '0%';
   }
 
+  let loaderTimer = null;
+  let loaderStepIdx = 0;
+
   function setLoading(on) {
     const btn     = document.getElementById('gen-btn');
     const spinner = document.getElementById('spinner');
     const label   = document.getElementById('btn-label');
+    const timeline = document.getElementById('loader-timeline');
+    const progress = document.getElementById('timeline-progress-bar');
+    
     btn.disabled        = on;
     spinner.style.display = on ? 'block' : 'none';
-    label.textContent   = on ? 'Generating your vibe…' : '✦ Generate My Vibe';
+    label.textContent   = on ? 'Synthesizing vibe...' : '✦ Generate My Vibe';
+
+    if (on) {
+      loaderStepIdx = 0;
+      progress.style.width = '5%';
+      timeline.style.display = 'flex';
+      
+      const steps = timeline.querySelectorAll('.timeline-step');
+      steps.forEach((s, idx) => {
+        s.classList.toggle('active', idx === 0);
+      });
+
+      if (loaderTimer) clearInterval(loaderTimer);
+
+      const targetProgresses = [20, 45, 65, 85, 95];
+      loaderTimer = setInterval(() => {
+        if (loaderStepIdx < 4) {
+          loaderStepIdx++;
+          steps.forEach((s, idx) => {
+            s.classList.toggle('active', idx === loaderStepIdx);
+          });
+          progress.style.width = targetProgresses[loaderStepIdx] + '%';
+        }
+      }, 1400);
+
+    } else {
+      if (loaderTimer) clearInterval(loaderTimer);
+      progress.style.width = '100%';
+      setTimeout(() => {
+        if (!btn.disabled) {
+          timeline.style.display = 'none';
+        }
+      }, 800);
+    }
   }
 
   function showError(msg) {
@@ -1196,6 +1480,7 @@
   // ── VIBE CONFIG ───────────────────────────────────────
   let currentVibeTag = "✦";
   let currentColors = ["#818cf8", "#2dd4bf", "#3b82f6", "#10b981"];
+  let selectedVoice = "Joanna";
   // ── 3D perspective tilt & border spotlight tracking ──
   function initTiltEffects() {
     const cards = document.querySelectorAll('.input-card, .vibe-card');
@@ -1307,6 +1592,333 @@
       translateY: [30, 0],
       opacity: [0, 1]
     }, '-=600');
+  }
+
+  // ── Voice Selector & Re-synthesis ─────────────────────
+  async function selectVoice(voiceId) {
+    if (selectedVoice === voiceId) return;
+    selectedVoice = voiceId;
+    
+    const pills = document.querySelectorAll('.voice-pill');
+    pills.forEach(p => {
+      p.classList.toggle('active', p.getAttribute('data-voice') === voiceId);
+    });
+
+    const activeMood = document.getElementById('mood-echo-text').textContent;
+    if (activeMood && activeMood !== '—' && activeMood !== '') {
+      showToast(`Re-synthesizing narration with ${voiceId}...`);
+      
+      const audioBtn = document.getElementById('audio-btn');
+      const spinner = document.createElement('div');
+      spinner.className = 'spinner';
+      spinner.style.margin = 'auto';
+      spinner.style.display = 'block';
+      
+      const originalHtml = audioBtn.innerHTML;
+      audioBtn.disabled = true;
+      audioBtn.innerHTML = '';
+      audioBtn.appendChild(spinner);
+      
+      try {
+        const res = await fetch(LAMBDA_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mood: activeMood, voice_id: voiceId }),
+        });
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        
+        const audioEl = document.getElementById('story-audio');
+        audioEl.src = `data:audio/mp3;base64,${data.audio_base64}`;
+        audioEl.load();
+        
+        showToast("Voice updated! Press play to listen.");
+      } catch(e) {
+        showToast("Could not update narrator voice. Try again.");
+      } finally {
+        audioBtn.disabled = false;
+        audioBtn.innerHTML = originalHtml;
+        audioEnded();
+      }
+    }
+  }
+
+  // ── Dynamic Web Audio Ambient Mixer ───────────────────
+  let ambientAudioCtx = null;
+  let rainNode = null;
+  let fireNode = null;
+  let vinylNode = null;
+  let ambientVolumeNode = null;
+  let ambientVol = 0.25;
+
+  function initAmbientContext() {
+    if (ambientAudioCtx) return;
+    ambientAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    ambientVolumeNode = ambientAudioCtx.createGain();
+    ambientVolumeNode.gain.setValueAtTime(ambientVol, ambientAudioCtx.currentTime);
+    ambientVolumeNode.connect(ambientAudioCtx.destination);
+  }
+
+  function createNoiseBuffer(duration = 2) {
+    const bufferSize = ambientAudioCtx.sampleRate * duration;
+    const buffer = ambientAudioCtx.createBuffer(1, bufferSize, ambientAudioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = Math.random() * 2 - 1;
+    }
+    return buffer;
+  }
+
+  function toggleAmbient(type) {
+    initAmbientContext();
+    if (ambientAudioCtx.state === 'suspended') {
+      ambientAudioCtx.resume();
+    }
+    
+    const btn = document.getElementById(`ambient-${type}`);
+    const isActive = btn.classList.toggle('active');
+    
+    if (isActive) {
+      if (type === 'rain') {
+        startRain();
+      } else if (type === 'fire') {
+        startFire();
+      } else if (type === 'vinyl') {
+        startVinyl();
+      }
+      showToast(`Activated ambient ${type}`);
+    } else {
+      if (type === 'rain') {
+        stopRain();
+      } else if (type === 'fire') {
+        stopFire();
+      } else if (type === 'vinyl') {
+        stopVinyl();
+      }
+      showToast(`Deactivated ambient ${type}`);
+    }
+  }
+
+  function setAmbientVolume(val) {
+    ambientVol = parseFloat(val);
+    if (ambientVolumeNode && ambientAudioCtx) {
+      ambientVolumeNode.gain.setValueAtTime(ambientVol, ambientAudioCtx.currentTime);
+    }
+  }
+
+  function startRain() {
+    if (rainNode) return;
+    
+    const source = ambientAudioCtx.createBufferSource();
+    source.buffer = createNoiseBuffer(3);
+    source.loop = true;
+
+    const filter = ambientAudioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(800, ambientAudioCtx.currentTime);
+
+    const lfo = ambientAudioCtx.createOscillator();
+    lfo.frequency.setValueAtTime(0.08, ambientAudioCtx.currentTime);
+    const lfoGain = ambientAudioCtx.createGain();
+    lfoGain.gain.setValueAtTime(0.15, ambientAudioCtx.currentTime);
+    
+    const filterGain = ambientAudioCtx.createGain();
+    filterGain.gain.setValueAtTime(0.2, ambientAudioCtx.currentTime);
+
+    lfo.connect(lfoGain);
+    lfoGain.connect(filterGain.gain);
+    
+    source.connect(filter);
+    filter.connect(filterGain);
+    filterGain.connect(ambientVolumeNode);
+
+    source.start();
+    lfo.start();
+    rainNode = { source, lfo, filterGain };
+  }
+
+  function stopRain() {
+    if (!rainNode) return;
+    try {
+      rainNode.source.stop();
+      rainNode.lfo.stop();
+    } catch(e){}
+    rainNode = null;
+  }
+
+  function startFire() {
+    if (fireNode) return;
+
+    const rumbleSource = ambientAudioCtx.createBufferSource();
+    rumbleSource.buffer = createNoiseBuffer(2);
+    rumbleSource.loop = true;
+    const rumbleFilter = ambientAudioCtx.createBiquadFilter();
+    rumbleFilter.type = 'lowpass';
+    rumbleFilter.frequency.setValueAtTime(120, ambientAudioCtx.currentTime);
+    const rumbleGain = ambientAudioCtx.createGain();
+    rumbleGain.gain.setValueAtTime(0.5, ambientAudioCtx.currentTime);
+
+    rumbleSource.connect(rumbleFilter);
+    rumbleFilter.connect(rumbleGain);
+    rumbleGain.connect(ambientVolumeNode);
+    rumbleSource.start();
+
+    const crackleNode = ambientAudioCtx.createScriptProcessor(4096, 0, 1);
+    crackleNode.onaudioprocess = (e) => {
+      const output = e.outputBuffer.getChannelData(0);
+      for (let i = 0; i < output.length; i++) {
+        output[i] = 0;
+        if (Math.random() < 0.0007) {
+          let amplitude = Math.random() * 0.6 + 0.2;
+          for (let j = 0; j < 25; j++) {
+            if (i + j < output.length) {
+              output[i + j] += amplitude * Math.exp(-j * 0.18) * (Math.random() * 2 - 1);
+            }
+          }
+        }
+      }
+    };
+    crackleNode.connect(ambientVolumeNode);
+    fireNode = { rumbleSource, crackleNode };
+  }
+
+  // ── High-Fidelity Meme Export Canvas Renderer ─────────
+  function exportMeme() {
+    const template = document.getElementById('meme-template').textContent;
+    const top = document.getElementById('meme-text-top').textContent;
+    const bottom = document.getElementById('meme-text-bottom').textContent;
+    
+    showToast("Generating meme download...");
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = 600;
+    canvas.height = 600;
+    const ctx = canvas.getContext('2d');
+    
+    ctx.fillStyle = '#0a0a0d';
+    ctx.fillRect(0, 0, 600, 600);
+    
+    ctx.strokeStyle = '#1d1d23';
+    ctx.lineWidth = 14;
+    ctx.strokeRect(7, 7, 586, 586);
+    
+    const accentColor = currentColors[0] || '#818cf8';
+    const grad = ctx.createRadialGradient(300, 300, 20, 300, 300, 240);
+    grad.addColorStop(0, accentColor + '30');
+    grad.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grad;
+    ctx.fillRect(14, 14, 572, 572);
+    
+    ctx.fillStyle = accentColor;
+    ctx.shadowColor = accentColor;
+    ctx.shadowBlur = 24;
+    ctx.font = '72px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('✦', 300, 300);
+    ctx.shadowBlur = 0;
+    
+    ctx.fillStyle = '#1d1d23';
+    ctx.beginPath();
+    ctx.roundRect(140, 42, 320, 36, 18);
+    ctx.fill();
+    
+    ctx.fillStyle = accentColor;
+    ctx.font = 'bold 12px "Outfit", sans-serif';
+    ctx.letterSpacing = '2px';
+    ctx.fillText(template.toUpperCase(), 300, 60);
+    
+    const drawMemeText = (text, y, isTop) => {
+      ctx.font = '900 32px "Impact", sans-serif';
+      ctx.fillStyle = '#ffffff';
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 6;
+      ctx.textAlign = 'center';
+      
+      const words = text.split(' ');
+      let lines = [];
+      let line = '';
+      for (let n = 0; n < words.length; n++) {
+        let test = line + words[n] + ' ';
+        if (ctx.measureText(test).width > 480 && n > 0) {
+          lines.push(line.trim());
+          line = words[n] + ' ';
+        } else {
+          line = test;
+        }
+      }
+      lines.push(line.trim());
+      
+      let startY = isTop ? y : y - (lines.length - 1) * 38;
+      lines.forEach((l, idx) => {
+        let lineY = startY + idx * 38;
+        ctx.strokeText(l, 300, lineY);
+        ctx.fillText(l, 300, lineY);
+      });
+    };
+    
+    drawMemeText(top, 140, true);
+    drawMemeText(bottom, 480, false);
+    
+    ctx.fillStyle = 'rgba(255,255,255,0.18)';
+    ctx.font = '800 9px "Outfit", sans-serif';
+    ctx.letterSpacing = '3px';
+    ctx.fillText('VIBEVERSE AI', 300, 555);
+    
+    const link = document.createElement('a');
+    link.download = `vibeverse-meme-${template.toLowerCase().replace(/\s+/g, '-')}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    showToast("Meme saved!");
+  }
+
+  function stopFire() {
+    if (!fireNode) return;
+    try {
+      fireNode.rumbleSource.stop();
+      fireNode.crackleNode.disconnect();
+    } catch(e){}
+    fireNode = null;
+  }
+
+  function startVinyl() {
+    if (vinylNode) return;
+
+    const humOsc = ambientAudioCtx.createOscillator();
+    humOsc.type = 'sine';
+    humOsc.frequency.setValueAtTime(50, ambientAudioCtx.currentTime);
+    const humGain = ambientAudioCtx.createGain();
+    humGain.gain.setValueAtTime(0.05, ambientAudioCtx.currentTime);
+    humOsc.connect(humGain);
+    humGain.connect(ambientVolumeNode);
+    humOsc.start();
+
+    const scratchNode = ambientAudioCtx.createScriptProcessor(4096, 0, 1);
+    scratchNode.onaudioprocess = (e) => {
+      const output = e.outputBuffer.getChannelData(0);
+      for (let i = 0; i < output.length; i++) {
+        output[i] = (Math.random() * 2 - 1) * 0.006;
+        if (Math.random() < 0.00018) {
+          let amplitude = Math.random() * 0.4 + 0.1;
+          for (let j = 0; j < 65; j++) {
+            if (i + j < output.length) {
+              output[i + j] += amplitude * Math.exp(-j * 0.07) * (Math.random() * 2 - 1);
+            }
+          }
+        }
+      }
+    };
+    scratchNode.connect(ambientVolumeNode);
+    vinylNode = { humOsc, scratchNode };
+  }
+
+  function stopVinyl() {
+    if (!vinylNode) return;
+    try {
+      vinylNode.humOsc.stop();
+      vinylNode.scratchNode.disconnect();
+    } catch(e){}
+    vinylNode = null;
   }
 
   // Allow Ctrl+Enter / Cmd+Enter to submit
