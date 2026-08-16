@@ -16,8 +16,11 @@ You type in a mood, a feeling, or a life moment — "I just got rejected from my
 - A **curated playlist concept** with an evocative title and five track themes that match the vibe
 - A **color palette** of 4 hex codes and a poetic description of what those colors feel
 - An **audio narration** of your story, read aloud in a warm voice
+- A **Vibe Studio Creative Suite** containing:
+  - An **Album Art Cover Remixer**: A customizable, interactive pointer-attraction particle Canvas. Change overlay quotes, pick layout templates (Modernist grid, Vinyl groove, Ambient atmospheric gradients), and download as a PNG.
+  - A **Vibe Catcher Game**: A retro, dynamic Web-Audio game styled in your vibe color palette where you catch positive emotions and dodge bad vibe slops with full audio feedback.
 
-The result is a beautiful "vibe card" — a creative artifact of your emotional moment. You can close your eyes and listen to your story, stare at the colors, and feel understood by a machine for a few minutes. That's the magic of VibeVerse.
+The result is a beautiful multi-sensory "vibe card" — a creative artifact of your emotional moment. You can close your eyes and listen to your story, download your customized cover art, and play a soothing game styled in your mood colors. That's the magic of VibeVerse.
 
 ---
 
@@ -48,9 +51,13 @@ Another challenge: Polly has a 3,000-character limit per `SynthesizeSpeech` call
 ```
 Browser (Amplify Hosted)
        │
-       │ POST /
+       │ POST / (CORS Enabled)
        ▼
-AWS Lambda (Python 3.12, Function URL)
+Amazon API Gateway V2 (HTTP API Proxy)
+       │
+       │ Route: $default
+       ▼
+AWS Lambda (Python 3.12, Function URL Backend)
        │
        ├──► Amazon Bedrock (Nova Lite)
        │     • Mood → story + playlist + palette + vibe tag
@@ -64,11 +71,12 @@ AWS Lambda (Python 3.12, Function URL)
 | Service | Role | Free Tier |
 |---|---|---|
 | **Amazon Bedrock (Nova Lite)** | Story + playlist + palette generation | ~$0.0002/call |
-| **AWS Lambda** | Serverless backend, Function URL | 1M requests/month free |
+| **Amazon API Gateway V2** | HTTP API endpoint proxy & CORS headers | 1M API calls/month free |
+| **AWS Lambda** | Serverless backend controller | 1M requests/month free |
 | **Amazon Polly** | Neural text-to-speech narration | 5M chars/month free |
 | **AWS Amplify** | Frontend hosting (static HTML/JS) | 15 GB/month free |
 
-No API Gateway, no database, no persistent storage — beautifully simple and cost-effective.
+Highly optimized, serverless, cost-effective, and fully decoupled.
 
 ---
 
