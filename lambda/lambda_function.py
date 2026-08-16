@@ -24,7 +24,12 @@ Given a mood, feeling, or life moment, respond with ONLY valid JSON (no markdown
   ],
   "color_palette": ["#hexcode1", "#hexcode2", "#hexcode3", "#hexcode4"],
   "palette_description": "One sentence poetic description of the color palette and what feeling it evokes",
-  "vibe_tag": "A single word or short phrase that is the essence of this vibe (e.g. 'Bittersweet Nostalgia')"
+  "vibe_tag": "A single word or short phrase that is the essence of this vibe (e.g. 'Bittersweet Nostalgia')",
+  "suggested_meme": {
+    "template": "A popular meme template name matching this vibe (e.g. 'This is Fine', 'Distracted Boyfriend', 'Drake Hotline Bling')",
+    "text_top": "Short, clever top text for the meme",
+    "text_bottom": "Short, clever bottom text for the meme"
+  }
 }
 
 CRITICAL STORYTELLING RULES:
