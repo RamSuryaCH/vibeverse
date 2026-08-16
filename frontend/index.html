@@ -24,7 +24,39 @@
       --trans:     0.35s cubic-bezier(.4,0,.2,1);
     }
 
-    html { font-size: 16px; scroll-behavior: smooth; }
+    html {
+      font-size: 16px;
+      scroll-behavior: smooth;
+      
+      /* Modern scrollbar styling matching glassmorphic colors */
+      --scrollbar-thumb: var(--accent);
+      --scrollbar-track: var(--bg);
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+      scrollbar-width: thin;
+    }
+
+    /* Legacy WebKit scrollbar fallback */
+    @supports not (scrollbar-color: auto) {
+      html::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      html::-webkit-scrollbar-thumb {
+        background: var(--accent);
+        border-radius: 100px;
+      }
+      html::-webkit-scrollbar-track {
+        background: var(--bg);
+      }
+    }
+
+    /* Typographic enhancements for layout and legibility */
+    h1, h2, h3, .vibe-card h2, .playlist-title {
+      text-wrap: balance;
+    }
+    p, .story-text, .tagline, .palette-desc {
+      text-wrap: pretty;
+    }
 
     body {
       background: var(--bg);

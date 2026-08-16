@@ -6,7 +6,7 @@ import os
 bedrock = boto3.client('bedrock-runtime', region_name=os.environ.get('AWS_REGION', 'us-east-1'))
 polly   = boto3.client('polly',           region_name=os.environ.get('AWS_REGION', 'us-east-1'))
 
-SYSTEM_PROMPT = """You are VibeVerse, a creative mood-to-story generator.
+SYSTEM_PROMPT = """You are VibeVerse, a sharp human storyteller and editor.
 Given a mood, feeling, or life moment, respond with ONLY valid JSON (no markdown, no explanation):
 {
   "story_paragraphs": [
@@ -25,7 +25,15 @@ Given a mood, feeling, or life moment, respond with ONLY valid JSON (no markdown
   "color_palette": ["#hexcode1", "#hexcode2", "#hexcode3", "#hexcode4"],
   "palette_description": "One sentence poetic description of the color palette and what feeling it evokes",
   "vibe_tag": "A single word or short phrase that is the essence of this vibe (e.g. 'Bittersweet Nostalgia')"
-}"""
+}
+
+CRITICAL STORYTELLING RULES:
+- Write in a genuine, human voice. Avoid generic polished prose.
+- Be concrete and specific. Use active voice.
+- NEVER use these AI clichés: delve, foster, leverage, utilize, facilitate, empower, streamline, robust, cutting-edge, paradigm shift, game changer, tapestry, realm, beacon, multifaceted, meticulous, intricate, paramount, transformative, elevate, embark, supercharge, harness, ever-evolving.
+- Avoid binary contrasts ("not X, but Y") and fake-profound kicker lines that end in cute metaphors.
+- End on the last concrete image or feeling; do not summarize or recap.
+"""
 
 
 def handler(event, context):
