@@ -20,7 +20,7 @@
       --text:      #f5f5fa;
       --muted:     #8f9cae;
       --accent:    #818cf8; /* Elegant Indigo */
-      --accent2:   #2dd4bf; /* Breathtaking Cyan/Teal */
+      --accent2:   var(--accent); /* Simple flat accent color */
       --glow:      rgba(45, 212, 191, 0.15);
       --radius:    24px;
       --trans:     0.4s cubic-bezier(.16,1,.3,1);
@@ -119,8 +119,7 @@
       font-family: 'Playfair Display', serif;
       font-size: clamp(2.4rem, 6vw, 3.8rem);
       font-weight: 700; line-height: 1.12;
-      background: linear-gradient(135deg, #e2d9f3 0%, var(--accent) 45%, var(--accent2) 100%);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      color: var(--text);
       margin-bottom: 14px;
     }
     .tagline { color: var(--muted); font-size: 1.05rem; font-weight: 300; line-height: 1.6; }
@@ -227,9 +226,10 @@
       transition: box-shadow var(--trans), transform var(--trans), background var(--trans);
     }
     .btn-generate:hover:not(:disabled) {
-      background: linear-gradient(135deg, rgba(129, 140, 248, 0.04), rgba(45, 212, 191, 0.04));
+      background: var(--surface);
       box-shadow: var(--nm-flat-hover);
       transform: translateY(-2px);
+      color: var(--accent);
     }
     .btn-generate:active:not(:disabled) {
       box-shadow: var(--nm-inset);
@@ -474,12 +474,12 @@
       left: 0;
       top: 0;
       height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      background: var(--accent);
       border-radius: 10px;
       pointer-events: none;
       z-index: 2;
       width: 0%;
-      box-shadow: 0 0 8px var(--accent2);
+      box-shadow: 0 0 8px var(--accent);
     }
     .player-time {
       font-size: 0.8rem;
@@ -642,9 +642,10 @@
       margin-top: 8px;
     }
     .btn-studio-action:hover {
-      background: linear-gradient(135deg, rgba(129, 140, 248, 0.04), rgba(45, 212, 191, 0.04));
+      background: var(--surface);
       box-shadow: var(--nm-flat-hover);
       transform: translateY(-2px);
+      color: var(--accent);
     }
     .btn-studio-action:active {
       box-shadow: var(--nm-inset);
@@ -714,9 +715,10 @@
       transition: box-shadow var(--trans), transform var(--trans), background var(--trans);
     }
     .btn-game-play:hover {
-      background: linear-gradient(135deg, rgba(129, 140, 248, 0.04), rgba(45, 212, 191, 0.04));
+      background: var(--surface);
       box-shadow: var(--nm-flat-hover);
       transform: translateY(-1px);
+      color: var(--accent);
     }
     .btn-game-play:active {
       box-shadow: var(--nm-inset);
@@ -972,10 +974,11 @@
   }
 
   function applyDynamicTheme(colors) {
-    if (!colors || colors.length < 2) return;
+    if (!colors || colors.length === 0) return;
     const root = document.documentElement;
-    root.style.setProperty('--accent', colors[0]);
-    root.style.setProperty('--accent2', colors[1]);
+    const primaryColor = colors[0];
+    root.style.setProperty('--accent', primaryColor);
+    root.style.setProperty('--accent2', primaryColor);
     
     const hexToRgb = (hexStr) => {
       const h = hexStr.replace('#', '');
@@ -985,14 +988,13 @@
       return { r, g, b };
     };
 
-    const c1 = hexToRgb(colors[0]);
-    const c2 = hexToRgb(colors[1]);
+    const c1 = hexToRgb(primaryColor);
 
-    root.style.setProperty('--glow', `rgba(${c2.r}, ${c2.g}, ${c2.b}, 0.15)`);
+    root.style.setProperty('--glow', `rgba(${c1.r}, ${c1.g}, ${c1.b}, 0.15)`);
 
     // Dynamically tint skeuomorphic neumorphic shadows with mood accents
-    const darkShadow = `6px 6px 16px rgba(0, 0, 0, 0.45), -6px -6px 16px rgba(${c2.r}, ${c2.g}, ${c2.b}, 0.04)`;
-    const flatHover = `8px 8px 24px rgba(0, 0, 0, 0.55), -8px -8px 24px rgba(${c2.r}, ${c2.g}, ${c2.b}, 0.055)`;
+    const darkShadow = `6px 6px 16px rgba(0, 0, 0, 0.45), -6px -6px 16px rgba(${c1.r}, ${c1.g}, ${c1.b}, 0.04)`;
+    const flatHover = `8px 8px 24px rgba(0, 0, 0, 0.55), -8px -8px 24px rgba(${c1.r}, ${c1.g}, ${c1.b}, 0.055)`;
     const insetShadow = `inset 5px 5px 12px rgba(0, 0, 0, 0.45), inset -5px -5px 12px rgba(${c1.r}, ${c1.g}, ${c1.b}, 0.04)`;
 
     root.style.setProperty('--nm-flat', darkShadow);
@@ -1238,12 +1240,7 @@
         const val = (values[i] / 255) * h * 0.95;
         const height = Math.max(val, 2);
         
-        const grad = visualizerCtx.createLinearGradient(0, centerY - height/2, 0, centerY + height/2);
-        grad.addColorStop(0, currentColors[1] || '#2dd4bf');
-        grad.addColorStop(0.5, currentColors[0] || '#818cf8');
-        grad.addColorStop(1, currentColors[1] || '#2dd4bf');
-
-        visualizerCtx.fillStyle = grad;
+        visualizerCtx.fillStyle = currentColors[0] || '#818cf8';
         visualizerCtx.fillRect(i * (barWidth + gap), centerY - height/2, barWidth, height);
       }
 
